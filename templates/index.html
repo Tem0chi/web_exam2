@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Web Services Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container py-5">
+    <h1 class="text-center mb-4">Service Dashboard</h1>
+
+    <form method="POST" class="row g-3 mb-5">
+        <div class="col-md-5">
+            <input type="text" name="city" class="form-control" placeholder="Enter City (e.g. London)" required>
+        </div>
+        <div class="col-md-5">
+            <input type="text" name="topic" class="form-control" placeholder="News Topic (e.g. Tech, Sports)">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Fetch Data</button>
+        </div>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}{% for msg in messages %}<div class="alert alert-danger">{{ msg }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Weather in {{ weather.city if weather else '---' }}</h3>
+            {% if weather %}
+                <div class="card p-3">
+                    <p><strong>Temp:</strong> {{ weather.temp }}°C</p>
+                    <p><strong>Condition:</strong> {{ weather.desc }}</p>
+                    <p><strong>Country:</strong> {{ weather.country }}</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <h3>Top 3 {{ topic }} Headlines</h3>
+            {% for article in news %}
+                <div class="mb-3">
+                    <a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+                    <p class="small text-muted">{{ article.source.name }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
